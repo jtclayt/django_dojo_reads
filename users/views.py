@@ -30,7 +30,7 @@ class Main(object):
         raise ImproperlyConfigured('Context not defined.')
 
 
-class Login(Main, View):
+class LoginView(Main, View):
     template = 'login.html'
     context = {
         'login_form': LoginForm()
@@ -49,7 +49,7 @@ class Login(Main, View):
         return redirect(reverse('users:login'))
 
 
-class Register(Main, View):
+class RegisterView(Main, View):
     template = 'register.html'
     context = {
         'reg_form': RegisterForm()
