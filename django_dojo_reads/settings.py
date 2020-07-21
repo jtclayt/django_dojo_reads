@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'app',
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -122,4 +123,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     ('app', os.path.join(BASE_DIR, "app/static")),
+    ('users', os.path.join(BASE_DIR, "users/static"))
 ]
+
+AUTH_USER_MODEL = 'users.User'
