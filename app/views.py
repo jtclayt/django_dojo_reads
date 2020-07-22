@@ -8,6 +8,10 @@ def index(request):
     return redirect(reverse('app:books'))
 
 
+def new_book(request):
+    return render(request, 'new-book.html')
+
+
 class Main(object):
     template = None
 

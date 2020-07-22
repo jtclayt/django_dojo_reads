@@ -58,16 +58,19 @@ class RegisterView(Main, View):
     def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = get_user_model().objects.create_user(
-                email=form.cleaned_data['email'],
-                password=form.cleaned_data['password1'],
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
-                alias=form.cleaned_data['alias']
-            )
-            login(request, user)
-            print(request.user.is_authenticated)
-            return redirect('app:index')
+            if request.POST['password1'] == request.POST['password2']:
+                user = get_user_model().objects.create_user(
+                    email=form.cleaned_data['email'],
+                    password=form.cleaned_data['password1'],
+                    first_name=form.cleaned_data['first_name'],
+                    last_name=form.cleaned_data['last_name'],
+                    alias=form.cleaned_data['alias']
+                )
+                login(request, user)
+                return redirect('app:index')
+
+            messages.error(request, 'Passwords must match')
+
         for key, errors in form.errors.items():
             for error in errors:
                 messages.error(request, error)

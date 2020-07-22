@@ -3,6 +3,20 @@
 */
 
 /* HTML selector rules */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-top: 15px;
+}
+
+form button {
+  margin-top: 25px;
+  align-self: center;
+}
+
 h1 a {
   margin-left: 25px;
   color: whitesmoke;

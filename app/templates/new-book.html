@@ -1,0 +1,65 @@
+<!--
+  Author: Justin Clayton
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Book and Review</title>
+  {% load static %}
+  <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'app/css/books.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="{% static 'js/index.js' %}"></script>
+</head>
+<body>
+  <header>
+    <h1>Dojo Reads</h1>
+    <div id="status">
+      <p>Welcome, {{ request.user.get_full_name }}</p>
+      <a class="btn btn-primary" href="{% url 'app:books' %}">Home</a>
+      <a class="btn btn-warning" href="{% url 'users:logout' %}">Logout</a>
+    </div>
+  </header>
+  <main class="container bg-light">
+    <div class="row justify-content-center">
+      <form action="{% url 'app:books' %}" method="POST">{% csrf_token %}
+        <h2>Add a New Book Title and a Review</h2>
+
+        <label for="title">Book Title</label>
+        <input id="title" name="title" class="form-control" type="text"
+          minlength="3" maxlength="255"required>
+
+        {% if authors %}
+        <label for="author-select">Choose an author from the list</label>
+        <select name="author-select" id="author-select" class="form-control">
+          <option value="" disabled selected hidden>Select an author</option>
+          {% for author in authors %}
+          <option value="{{ author.id }}">{{ author.name }}</option>
+          {% endfor %}
+        </select>
+        {% endif %}
+
+        <label for="author-input">Add a new author</label>
+        <input id="author-input" name="author-input" class="form-control"
+          type="text" minlength="3" maxlength="255"required>
+
+        <label for="review">Review</label>
+        <textarea name="review" id="review" class="form-control"></textarea>
+
+        <label for="rating">Rating</label>
+        <input class="form-control" type="number" name="rating" id="rating"
+          min="1" max="5">
+
+        <button type="submit" class="btn btn-success">Add Review</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
