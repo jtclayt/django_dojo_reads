@@ -34,7 +34,9 @@ header div#status a, header div#status p {
 }
 
 /* Class rules */
-
+.row {
+  justify-content: space-evenly;
+}
 
 /* ID rules */
 
