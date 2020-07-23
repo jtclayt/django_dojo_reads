@@ -3,8 +3,18 @@ from django.contrib.auth import get_user_model
 
 
 class ReviewManager(models.Manager):
-    def validator(self, postData):
+    def validate_review(self, postData):
         errors = {}
+
+        if len(postData['review']) < 10:
+            errors['review'] = 'Review must be 10 or more characters'
+        if int(postData['rating']) < 1 or int(postData['rating']) > 5:
+            errors['rating'] = 'Rating must be between 1 and 5'
+
+        return errors
+
+    def validate_new_book(self, postData):
+        errors = self.validate_review(postData)
 
         # Title validations
         if len(postData['title']) < 3:
@@ -15,12 +25,6 @@ class ReviewManager(models.Manager):
             errors['author'] = 'Need to select or input an author.'
         elif len(postData['author']) > 0 and len(postData['author']) < 2:
             errors['author'] = 'Author name must be 3 or more characters'
-
-        # Review validations
-        if len(postData['review']) < 10:
-            errors['review'] = 'Review must be 10 or more characters'
-        if int(postData['rating']) < 1 or int(postData['rating']) > 5:
-            errors['rating'] = 'Rating must be between 1 and 5'
 
         return errors
 

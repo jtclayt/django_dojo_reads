@@ -29,7 +29,7 @@
       <a class="btn btn-outline-warning" href="{% url 'users:logout' %}">Logout</a>
     </div>
   </header>
-  <main class="container">
+  <main class="container bg-light">
     <div class="row">
       <section class="col-lg-6">
         <h2>{{ book.title }}</h2>
@@ -54,9 +54,15 @@
         </div>
         {% endfor %}
       </section>
-      <form action="{% url 'app:book_detail' book_id=book.id %}"
+      <form action="{% url 'app:book_detail' book_id=book.id %}" method="POST"
         class="col-lg-4">{% csrf_token %}
         <h2>Add A Review</h2>
+
+        {% if messages %}
+          {% for message in messages %}
+          <p class="text-center text-danger">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
 
         <label for="review">Review</label>
         <textarea name="review" id="review" class="form-control"
@@ -64,7 +70,7 @@
 
         <label for="rating">Rating (1 to 5)</label>
         <input class="form-control" type="number" name="rating" id="rating"
-          min="1" max="5">
+          min="1" max="5" value="3">
 
         <button type="submit" class="btn-lg btn-success">Add Review</button>
       </form>

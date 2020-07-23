@@ -26,14 +26,20 @@
       <a class="btn btn-outline-warning" href="{% url 'users:logout' %}">Logout</a>
     </div>
   </header>
-  <main class="container">
+  <main class="container bg-light">
     <div class="row justify-content-center">
       <form action="{% url 'app:books' %}" method="POST">{% csrf_token %}
         <h2>Add a New Book Title and a Review</h2>
 
+        {% if messages %}
+          {% for message in messages %}
+          <p class="text-center text-danger">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+
         <label for="title">Book Title</label>
         <input id="title" name="title" class="form-control" type="text"
-          minlength="3" maxlength="255"required>
+          minlength="3" maxlength="255" required>
 
         {% if authors %}
         <label for="author-select">Choose an author from the list</label>
@@ -58,7 +64,7 @@
 
         <label for="rating">Rating (1 to 5)</label>
         <input class="form-control" type="number" name="rating" id="rating"
-          min="1" max="5">
+          min="1" max="5" value="3">
 
         <button type="submit" class="btn-lg btn-success">Add Review</button>
       </form>

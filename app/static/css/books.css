@@ -27,6 +27,10 @@ h1 a:hover {
   text-decoration: none;
 }
 
+h2 {
+  text-align: center;
+}
+
 header div#status a, header div#status p {
   font-size: 1.4rem;
   display: inline;

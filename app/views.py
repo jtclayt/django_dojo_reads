@@ -38,9 +38,9 @@ class BooksView(LoginRequiredMixin, Main, View):
         return render(request, self.get_template(), context)
 
     def post(self, request):
-        errors = Review.objects.validator(request.POST)
+        errors = Review.objects.validate_new_book(request.POST)
         if len(errors) > 0:
-            for error in errors.items():
+            for key, error in errors.items():
                 messages.error(request, error)
             return redirect(reverse('app:new_book'))
 
@@ -74,3 +74,17 @@ class BookDetailView(LoginRequiredMixin, Main, View):
             'stars': [1, 2, 3, 4, 5]
         }
         return render(request, self.get_template(), context)
+
+    def post(self, request, book_id):
+        errors = Review.objects.validate_review(request.POST)
+        if len(errors) > 0:
+            for key, error in errors.items():
+                messages.error(request, error)
+        else:
+            Review.objects.create(
+                review=request.POST['review'],
+                rating=int(request.POST['rating']),
+                book=get_object_or_404(Book, id=book_id),
+                created_by=request.user
+            )
+        return redirect(reverse('app:book_detail', args=(book_id,)))
