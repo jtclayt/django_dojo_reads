@@ -1,0 +1,55 @@
+<!--
+  Author: Justin Clayton
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  {% load static %}
+  <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'app/css/books.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="{% static 'js/index.js' %}"></script>
+</head>
+<body>
+  <header>
+    <h1>Dojo Reads</h1>
+    <div id="status">
+      <p>Welcome, {{ request.user.get_full_name }}</p>
+      <a class="btn btn-success" href="{% url 'app:new_book' %}">
+        Add Book and Review
+      </a>
+      <a class="btn btn-warning" href="{% url 'users:logout' %}">Logout</a>
+    </div>
+  </header>
+  <main class="container bg-light">
+    <div class="row">
+      <section class="col-lg-7">
+        <h2>{{ book.title }}</h2>
+        <h3>{{ book.author.name }}</h3>
+        <h4>Reviews:</h4>
+        {% for review in book.reviews.all %}
+        <div class="card">
+          <p>Rating: {{ review.rating }}</p>
+          <p>
+            <a href="#">{{ review.created_by.alias }}</a>
+            says: {{ review.review }}
+          </p>
+          <p>Posted on: {{ review.created_at.date }}</p>
+        </div>
+        {% endfor %}
+      </section>
+      <form class="col-lg-4">
+        <h2>Add A Review</h2>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

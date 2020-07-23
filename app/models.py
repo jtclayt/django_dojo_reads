@@ -11,28 +11,28 @@ class ReviewManager(models.Manager):
             errors['title'] = 'Title must be 2 or more characters'
 
         # Author validations
-        if 'author-input' not in postData or 'author-select' not in postData:
+        if not (postData['author'] or postData['author_id']):
             errors['author'] = 'Need to select or input an author.'
-        elif len(postData['author-input']) < 2:
+        elif len(postData['author']) > 0 and len(postData['author']) < 2:
             errors['author'] = 'Author name must be 3 or more characters'
 
         # Review validations
         if len(postData['review']) < 10:
             errors['review'] = 'Review must be 10 or more characters'
-        if postData['rating'] < 1 or postData['rating'] > 5:
+        if int(postData['rating']) < 1 or int(postData['rating']) > 5:
             errors['rating'] = 'Rating must be between 1 and 5'
 
         return errors
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     author = models.ForeignKey(
         Author,
         related_name='books',
@@ -42,7 +42,7 @@ class Book(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Reviews(models.Model):
+class Review(models.Model):
     review = models.TextField()
     rating = models.SmallIntegerField()
     book = models.ForeignKey(
