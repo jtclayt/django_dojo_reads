@@ -20,16 +20,16 @@
 </head>
 <body>
   <header>
-    <h1>Dojo Reads</h1>
+    <h1><a href="{% url 'app:books' %}">Dojo Reads</a></h1>
     <div id="status">
       <p>Welcome, {{ request.user.get_full_name }}</p>
-      <a class="btn btn-success" href="{% url 'app:new_book' %}">
+      <a class="btn btn-outline-success" href="{% url 'app:new_book' %}">
         Add Book and Review
       </a>
-      <a class="btn btn-warning" href="{% url 'users:logout' %}">Logout</a>
+      <a class="btn btn-outline-warning" href="{% url 'users:logout' %}">Logout</a>
     </div>
   </header>
-  <main class="container bg-light">
+  <main class="container">
     <div class="row">
       <section class="col-lg-6" id="recent-reviews">
         <h2>Recent Book Reviews</h2>

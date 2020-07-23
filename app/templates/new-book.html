@@ -20,14 +20,13 @@
 </head>
 <body>
   <header>
-    <h1>Dojo Reads</h1>
+    <h1><a href="{% url 'app:books' %}">Dojo Reads</a></h1>
     <div id="status">
       <p>Welcome, {{ request.user.get_full_name }}</p>
-      <a class="btn btn-primary" href="{% url 'app:books' %}">Home</a>
-      <a class="btn btn-warning" href="{% url 'users:logout' %}">Logout</a>
+      <a class="btn btn-outline-warning" href="{% url 'users:logout' %}">Logout</a>
     </div>
   </header>
-  <main class="container bg-light">
+  <main class="container">
     <div class="row justify-content-center">
       <form action="{% url 'app:books' %}" method="POST">{% csrf_token %}
         <h2>Add a New Book Title and a Review</h2>
@@ -54,13 +53,14 @@
           type="text" minlength="3" maxlength="255">
 
         <label for="review">Review</label>
-        <textarea name="review" id="review" class="form-control"></textarea>
+        <textarea name="review" id="review" class="form-control"
+          minlength="10" required></textarea>
 
         <label for="rating">Rating (1 to 5)</label>
         <input class="form-control" type="number" name="rating" id="rating"
           min="1" max="5">
 
-        <button type="submit" class="btn btn-success">Add Review</button>
+        <button type="submit" class="btn-lg btn-success">Add Review</button>
       </form>
     </div>
   </main>
