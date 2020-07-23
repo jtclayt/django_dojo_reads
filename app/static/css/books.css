@@ -33,10 +33,24 @@ header div#status a, header div#status p {
   margin-right: 10px;
 }
 
+section ul {
+  list-style: none;
+  max-height: 500px;
+}
+
 /* Class rules */
+.card {
+  padding: 20px;
+  margin: 20px;
+}
+
+.card p img {
+  width: 30px;
+  display: inline-block;
+}
+
 .row {
   justify-content: space-evenly;
 }
 
 /* ID rules */
-

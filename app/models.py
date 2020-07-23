@@ -30,6 +30,9 @@ class Author(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Book(models.Model):
     title = models.CharField(max_length=255, unique=True)
@@ -40,6 +43,9 @@ class Book(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
 
 
 class Review(models.Model):
@@ -59,3 +65,6 @@ class Review(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = ReviewManager()
+
+    def __str__(self):
+        return f'Review of {self.book.title} by user {self.created_by.alias}'

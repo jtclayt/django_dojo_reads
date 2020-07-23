@@ -23,6 +23,7 @@
     <h1>Dojo Reads</h1>
     <div id="status">
       <p>Welcome, {{ request.user.get_full_name }}</p>
+      <a class="btn btn-primary" href="{% url 'app:books' %}">Home</a>
       <a class="btn btn-success" href="{% url 'app:new_book' %}">
         Add Book and Review
       </a>
@@ -31,13 +32,21 @@
   </header>
   <main class="container bg-light">
     <div class="row">
-      <section class="col-lg-7">
+      <section class="col-lg-6">
         <h2>{{ book.title }}</h2>
         <h3>{{ book.author.name }}</h3>
         <h4>Reviews:</h4>
         {% for review in book.reviews.all %}
         <div class="card">
-          <p>Rating: {{ review.rating }}</p>
+          <p>Rating:
+            {% for i in stars %}
+            {% if i <= review.rating %}
+            <img src="{% static 'app/img/star.png' %}" alt="gold star">
+            {% else %}
+            <img src="{% static 'app/img/empty-star.png' %}" alt="empty star">
+            {% endif %}
+            {% endfor %}
+          </p>
           <p>
             <a href="#">{{ review.created_by.alias }}</a>
             says: {{ review.review }}
@@ -46,8 +55,18 @@
         </div>
         {% endfor %}
       </section>
-      <form class="col-lg-4">
+      <form action="{% url 'app:book_detail' book_id=book.id %}"
+        class="col-lg-4">{% csrf_token %}
         <h2>Add A Review</h2>
+
+        <label for="review">Review</label>
+        <textarea name="review" id="review" class="form-control"></textarea>
+
+        <label for="rating">Rating (1 to 5)</label>
+        <input class="form-control" type="number" name="rating" id="rating"
+          min="1" max="5">
+
+        <button type="submit" class="btn btn-primary">Add Review</button>
       </form>
     </div>
   </main>

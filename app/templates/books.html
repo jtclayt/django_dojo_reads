@@ -31,11 +31,38 @@
   </header>
   <main class="container bg-light">
     <div class="row">
-      <section id="recent-reviews">
+      <section class="col-lg-6" id="recent-reviews">
         <h2>Recent Book Reviews</h2>
+        {% for review in recent_reviews %}
+        <div class="card">
+          <h3>
+            <a href="/books/{{review.book.id}}/">{{ review.book.title }}</a>
+          </h3>
+          <p class="ml-4">
+            Rating:
+            {% for i in stars %}
+            {% if i <= review.rating %}
+            <img src="{% static 'app/img/star.png' %}" alt="gold star">
+            {% else %}
+            <img src="{% static 'app/img/empty-star.png' %}" alt="empty star">
+            {% endif %}
+            {% endfor %}
+          </p>
+          <p class="ml-4">
+            <a href="#">{{ review.created_by.alias }}</a>
+            says: {{ review.review }}
+          </p>
+          <p class="ml-4">Posted on: {{ review.created_at.date }}</p>
+        </div>
+        {% endfor %}
       </section>
-      <section id="books">
+      <section class="col-lg-5">
         <h2>Other Books With Reviews</h2>
+        <ul>
+          {% for book in books %}
+          <li><a href="/books/{{book.id}}/">{{ book.title }}</a></li>
+          {% endfor %}
+        </ul>
       </section>
     </div>
   </main>

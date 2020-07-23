@@ -30,7 +30,12 @@ class BooksView(LoginRequiredMixin, Main, View):
     template = 'books.html'
 
     def get(self, request):
-        return render(request, self.get_template())
+        context = {
+            'books': Book.objects.all(),
+            'recent_reviews': Review.objects.all().order_by('-created_at')[:3],
+            'stars': [1, 2, 3, 4, 5]
+        }
+        return render(request, self.get_template(), context)
 
     def post(self, request):
         errors = Review.objects.validator(request.POST)
@@ -40,20 +45,23 @@ class BooksView(LoginRequiredMixin, Main, View):
             return redirect(reverse('app:new_book'))
 
         if len(request.POST['author']) > 0:
-            author = Author.objects.get_or_create(
-                name__iexact=request.POST['author']
+            author, created = Author.objects.get_or_create(
+                name=request.POST['author'].title()
             )
         else:
             author = get_object_or_404(Author, id=request.POST['author_id'])
 
-        book = Book.objects.create(title=request.POST['title'], author=author)
+        book, created = Book.objects.get_or_create(
+            title=request.POST['title'].title(),
+            author=author
+        )
         Review.objects.create(
             review=request.POST['review'],
             rating=int(request.POST['rating']),
             book=book,
             created_by=request.user
         )
-        return redirect(reverse('app:books', args=(book.id,)))
+        return redirect(reverse('app:book_detail', args=(book.id,)))
 
 
 class BookDetailView(LoginRequiredMixin, Main, View):
@@ -61,5 +69,8 @@ class BookDetailView(LoginRequiredMixin, Main, View):
     template = 'book-detail.html'
 
     def get(self, request, book_id):
-        context = {'book': get_object_or_404(Book, id=book_id)}
+        context = {
+            'book': get_object_or_404(Book, id=book_id),
+            'stars': [1, 2, 3, 4, 5]
+        }
         return render(request, self.get_template(), context)
